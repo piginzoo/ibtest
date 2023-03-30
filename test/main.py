@@ -32,7 +32,7 @@ class TestApp(TestWrapper, TestClient):
 
     def get_contract(self, symbol):
         contract = Contract()
-        contract.symbol = symbol # "SPY 230120C00384000"
+        contract.symbol = symbol # "SPY 230120C00398000"
         contract.secType = "OPT"
         contract.exchange = "SMART"
         # contract.primaryExchange = "ISLAND"
@@ -52,6 +52,23 @@ class TestApp(TestWrapper, TestClient):
         contract.currency = "USD"
         contract.lastTradeDateOrContractMonth = "20230330"
         # contract.strike = 398
+        """
+        20230330 * (3500~4500)
+        20230318 * (3500~4500)
+        3.30,
+              4.1,4.2,4.5,4.7,4.8 date
+              3790 ~ 4100
+              4.1 (3790 ~ 4100) contract, 每分钟3.30，1次调用
+              4.2
+        4.1
+              4.2, 4.3, 4.5, 4.7, 4.9
+              3810~ 4100
+'''
+        3-30-4-1-C-4100.csv
+        3-30-4-1-C-4200.csv
+        3-30-4-1-C-4300.csv # 1天的数据，7x60 = 420                
+'''
+"""
         contract.right = "C"
         contract.multiplier = "100"
         contract.tradingClass = symbol
@@ -199,7 +216,7 @@ if __name__ == '__main__':
     app.tickid += 1
     print(f"Contacts:{app.reqContractDetails(app.tickid,app.get_contract('SPY 230330C00379000'))}")
     app.tickid += 1
-    app.get_option('SPY 230330C00379000')
+    app.get_option('SPX')
     time.sleep(3)  # sleep to allow enough time for data to be returned
 
     # 获得期权链
